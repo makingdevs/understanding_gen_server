@@ -16,10 +16,15 @@ defmodule UnderstandingGenServer.FibonacciServer do
         loop(state)
 
       {caller, n} when is_pid(caller) ->
-        result = Fibonacci.sequence(n)
-        state = Map.put(state, n, result)
-        send(caller, {:ok, n, result})
-        loop(state)
+        result =
+          case Map.get(state, n) do
+            nil -> Fibonacci.sequence(n)
+            r -> r
+          end
+
+        state
+        |> Map.put(n, result)
+        |> loop()
 
       _ ->
         loop(state)
