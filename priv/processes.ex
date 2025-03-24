@@ -1,12 +1,13 @@
 alias UnderstandingGenServer.FibonacciServer
 
+caller = self()
 IO.inspect(self(), label: "SELF")
 
 pid1 = FibonacciServer.start()
-send pid1, 10
+send pid1, {caller, 10}
 pid2 = FibonacciServer.start()
-send pid2, 15
+send pid2, {caller, 15}
 pid3 = FibonacciServer.start()
-send pid3, 20
+send pid3, {caller, 20}
 
-IO.inspect [r1, r2, r3]
+IO.inspect [pid1, pid2, pid3]
