@@ -19,3 +19,8 @@ Process.alive?(pid3)
 send pid1, {caller, 10}
 send pid2, {caller, 15}
 send pid3, {caller, 20}
+
+
+send pid1, :noop
+send pid2, :noop
+send pid3, :noop
