@@ -2,17 +2,27 @@ defmodule UnderstandingGenServer.FibonacciServer do
   alias UnderstandingGenServer.Fibonacci
 
   def start() do
-    spawn(__MODULE__, :loop, [])
+    spawn(__MODULE__, :loop, [init(%{})])
   end
 
-  def loop do
+  def init(opts) do
+    opts
+  end
+
+  def loop(state) do
     receive do
+      {caller, :status} ->
+        send(caller, {:reply, state})
+        loop(state)
+
       {caller, n} when is_pid(caller) ->
-        send(caller, {:ok, Fibonacci.sequence(n)})
-        loop()
+        result = Fibonacci.sequence(n)
+        state = Map.put(state, n, result)
+        send(caller, {:ok, n, result})
+        loop(state)
 
       _ ->
-        loop()
+        loop(state)
     end
   end
 end
