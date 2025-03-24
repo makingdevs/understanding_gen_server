@@ -1,24 +1,12 @@
+alias UnderstandingGenServer.FibonacciServer
+
 IO.inspect(self(), label: "SELF")
-parent = self()
-spawn(fn -> send(parent, {:ok, UnderstandingGenServer.Fibonacci.sequence(42)}) end)
 
-r1 =
-receive do
-  {:ok, r} -> r
-end
-
-spawn(fn -> send(parent, {:ok, UnderstandingGenServer.Fibonacci.sequence(43)}) end)
-
-r2 =
-receive do
-  {:ok, r} -> r
-end
-
-spawn(fn -> send(parent, {:ok, UnderstandingGenServer.Fibonacci.sequence(44)}) end)
-
-r3 =
-receive do
-  {:ok, r} -> r
-end
+pid1 = FibonacciServer.start()
+send pid1, 10
+pid2 = FibonacciServer.start()
+send pid2, 15
+pid3 = FibonacciServer.start()
+send pid3, 20
 
 IO.inspect [r1, r2, r3]
