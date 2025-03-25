@@ -9,10 +9,10 @@ defmodule UnderstandingGenServer.GenericServer do
 
   def loop(module, state) do
     receive do
-      {message, pid} ->
-        {:ok, result, state} = module.handle_message(message, state)
-        send(pid, {:ok, {module, message, result, state}})
-        loop(module, state)
+      {pid, message} ->
+        {:ok, result, new_state} = module.handle_message(message, state)
+        send(pid, {:ok, {module, message, result, new_state}})
+        loop(module, new_state)
 
       _ ->
         loop(module, state)
