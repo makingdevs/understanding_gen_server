@@ -1,4 +1,9 @@
 defmodule UnderstandingGenServer.GenericServer do
+  @callback handle_cast(msg :: term, state :: term) :: {:noreply, new_state :: term}
+  @callback handle_call(msg :: term, parent :: pid, state :: term) ::
+              {:reply, result :: term, new_state :: term}
+  @callback handle_info(msg :: term, state :: term) :: {:noreply, new_state :: term}
+
   def start(module, parent, opts) do
     spawn_link(__MODULE__, :loop, [module, parent, init(opts)])
   end
