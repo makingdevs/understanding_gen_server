@@ -30,8 +30,10 @@ defmodule UnderstandingGenServer.GenericServer do
         send(responds_to, result)
         loop(module, parent, new_state)
 
-      _ ->
-        loop(module, parent, state)
+      message ->
+        {:noreply, new_state} = module.handle_info(message, state)
+        send(parent, {:noreply, {module, message, new_state}})
+        loop(module, parent, new_state)
     end
   end
 end

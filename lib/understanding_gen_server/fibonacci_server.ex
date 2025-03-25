@@ -22,4 +22,9 @@ defmodule UnderstandingGenServer.FibonacciServer do
     IO.inspect(self(), label: "SELF")
     {:reply, state, state}
   end
+
+  def handle_info(message, state) do
+    IO.inspect(binding())
+    {:noreply, state}
+  end
 end
