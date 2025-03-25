@@ -1,6 +1,6 @@
 defmodule UnderstandingGenServer.GenericServer do
   def start(module, parent, opts) do
-    spawn(__MODULE__, :loop, [module, parent, init(opts)])
+    spawn_link(__MODULE__, :loop, [module, parent, init(opts)])
   end
 
   def init(opts) do
