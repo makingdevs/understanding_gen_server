@@ -14,11 +14,12 @@ defmodule UnderstandingGenServer.FibonacciServer do
       end
 
     new_state = Map.put_new(state, n, result)
-    {:ok, new_state}
+    {:noreply, new_state}
   end
 
-  def handle_cast({:status}, state) do
+  def handle_call({:status}, parent, state) do
+    IO.inspect(parent, label: "PARENT")
     IO.inspect(self(), label: "SELF")
-    {:ok, state}
+    {:reply, state, state}
   end
 end

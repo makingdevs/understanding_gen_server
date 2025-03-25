@@ -11,11 +11,23 @@ defmodule UnderstandingGenServer.GenericServer do
     send(pid_server, {:cast, message})
   end
 
+  def call(pid_server, message) do
+    send(pid_server, {:call, self(), message})
+
+    receive do
+      msg -> msg
+    end
+  end
+
   def loop(module, parent, state) do
     receive do
       {:cast, message} ->
-        {:ok, new_state} = module.handle_cast(message, state)
-        # send(pid, {:ok, {module, message, result, new_state}})
+        {:noreply, new_state} = module.handle_cast(message, state)
+        loop(module, parent, new_state)
+
+      {:call, responds_to, message} ->
+        {:reply, result, new_state} = module.handle_call(message, parent, state)
+        send(responds_to, result)
         loop(module, parent, new_state)
 
       _ ->
