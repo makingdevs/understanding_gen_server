@@ -1,4 +1,5 @@
 defmodule UnderstandingGenServer.FibonacciServer do
+  alias UnderstandingGenServer.GenericServer
   alias UnderstandingGenServer.Fibonacci
 
   def start() do

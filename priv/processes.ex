@@ -4,7 +4,7 @@ caller = self()
 IO.inspect(self(), label: "SELF")
 
 pid = FibonacciServer.start()
-send pid, {caller, 10}
-send pid, {caller, 20}
-send pid, {caller, 30}
-send pid, {caller, :status}
+send pid, {{:compute, 10}, caller}
+send pid, {{:compute, 20}, caller}
+send pid, {{:compute, 30}, caller}
+send pid, {{:status, :status}, caller} # ERROR
