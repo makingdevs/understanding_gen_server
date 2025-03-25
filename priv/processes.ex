@@ -13,3 +13,8 @@ GenericServer.cast(pid, {:compute, 30})
 GenericServer.call(pid, {:status})
 
 send pid, {:any, :noop}
+
+Process.flag(:trap_exit, true)
+Process.exit pid, :kill
+Process.monitor(pid)
+Process.exit(pid, :kill)
