@@ -1,20 +1,16 @@
-alias UnderstandingGenServer.FibonacciServer
-alias UnderstandingGenServer.GenericServer
+alias UnderstandingGenServer.FibonacciGenServer
 
-caller = self()
-IO.inspect(self(), label: "SELF")
+{:ok, pid} = FibonacciGenServer.start_link()
 
-pid = FibonacciServer.start()
+GenServer.cast(pid, {:compute, 10})
+GenServer.cast(pid, {:compute, 20})
+GenServer.cast(pid, {:compute, 30})
 
-GenericServer.cast(pid, {:compute, 10})
-GenericServer.cast(pid, {:compute, 20})
-GenericServer.cast(pid, {:compute, 30})
-
-GenericServer.call(pid, {:status})
+GenServer.call(pid, {:status})
 
 send pid, {:any, :noop}
 
-Process.flag(:trap_exit, true)
-Process.exit pid, :kill
-Process.monitor(pid)
-Process.exit(pid, :kill)
+# Process.flag(:trap_exit, true)
+# Process.exit pid, :kill
+# Process.monitor(pid)
+# Process.exit(pid, :kill)
