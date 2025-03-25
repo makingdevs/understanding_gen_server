@@ -30,4 +30,9 @@ defmodule UnderstandingGenServer.FibonacciServer do
   #       loop(state)
   #   end
   # end
+
+  def handle_message({:compute, n}, state) do
+    result = Fibonacci.sequence(n)
+    {:ok, result, state}
+  end
 end
