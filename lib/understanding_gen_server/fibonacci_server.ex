@@ -1,8 +1,7 @@
 defmodule UnderstandingGenServer.FibonacciServer do
   alias UnderstandingGenServer.GenericServer
   alias UnderstandingGenServer.Fibonacci
-
-  @behaviour UnderstandingGenServer.GenericServer
+  use UnderstandingGenServer.GenericServer
 
   def start() do
     GenericServer.start(__MODULE__, self(), %{})
